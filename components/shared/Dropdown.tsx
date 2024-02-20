@@ -1,7 +1,3 @@
-"use client";
-
-import { startTransition, useState, useEffect } from "react";
-
 import {
   Select,
   SelectContent,
@@ -9,7 +5,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { ICategory } from "@/lib/database/models/category.model";
+import { startTransition, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,11 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
-import { Input } from "@/components/ui/input";
-
-import { ICategory } from "@/lib/database/models/category.model";
-import { set } from "mongoose";
+import { Input } from "../ui/input";
 import {
   createCategory,
   getAllCategories,
@@ -38,13 +31,13 @@ type DropdownProps = {
 
 const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [newCategory, setNewCategory] = useState<string>("");
+  const [newCategory, setNewCategory] = useState("");
 
-  const handleAddCategory = async () => {
+  const handleAddCategory = () => {
     createCategory({
       categoryName: newCategory.trim(),
     }).then((category) => {
-      setCategories((prev) => [...prev, category]);
+      setCategories((prevState) => [...prevState, category]);
     });
   };
 
@@ -74,6 +67,7 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
               {category.name}
             </SelectItem>
           ))}
+
         <AlertDialog>
           <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">
             Add new category
